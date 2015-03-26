@@ -53,6 +53,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Resource Include="Data\NASDAQ\daily.txt" />
+    <Resource Include="Data\INX\daily.txt" />
+    <Resource Include="Data\DOW\daily.txt" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -61,6 +64,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Content Include="Data\AAPL\daily.txt" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -96,6 +100,162 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="data.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-09.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-10.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-11.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-12.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-13.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-16.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-17.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-18.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-19.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-20.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-23.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-24.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\AAPL\2015-03-25.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-09.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-09.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-10.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-11.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-12.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-13.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-16.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-17.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-18.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-19.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-20.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-23.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-24.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\INX\2015-03-25.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-10.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-11.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-12.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-13.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-16.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-17.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-18.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-19.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-20.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-23.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-24.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\NASDAQ\2015-03-25.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-09.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-10.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-11.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-12.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-13.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-16.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-17.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-18.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-19.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-20.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-23.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-24.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\DOW\2015-03-25.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

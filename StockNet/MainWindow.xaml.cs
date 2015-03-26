@@ -34,26 +34,39 @@ namespace StockNet
         // Neural Network
         NeuralNetwork[] networks;
         double[] errors;
-        const int INPUTNUM = 15;
-        const int HIDDENNUM = 10;
+        int INPUTNUM;
+        int HIDDENNUM;
         const int OUTPUTNUM = 1;
 
         // Genetic Algorithm
-        const int POPULATION = 200;
+        const int POPULATION = 64;
         const int GEN = 1000;
-        const int ELITE = 10;
-        const double MUTATION = 0.01;
+        const int ELITE = 8;
+        const double MUTATION = 0.008;
 
         // Data
-        double[] data;
-        const int TICKS = 391;
-        const int DAYS = 10;
+        double[][] aapl_day, dow_day, snp_day, nasdaq_day;
+        double[][] aapl, dow, snp, nasdaq;
+        const int TICKS = 390;
+        const int SAMPLE = 64;
+        const int DATA_LEN = 5;
+        const int WIN_DAY = 12;
+        const int WIN_MIN = 12;
 
         const int NORMALIZE = 200;
         Random random = new Random();
 
         private void StartTrain(object sender, RoutedEventArgs e)
         {
+            INPUTNUM =
+                1 +                     // Day of the week
+                1 +                     // Minute of the day
+                (WIN_DAY * DATA_LEN +   // data for past WIN_DAY days
+                WIN_MIN * DATA_LEN +    // data for past WIN_MIN minutes
+                1) *                    // open for the day
+                1;                      // DOW, S&P, NASDAQ
+            HIDDENNUM = (int)(INPUTNUM * 2 / 3);
+
             // Initialize networks
             networks = new NeuralNetwork[POPULATION];
             for (int i = 0; i < POPULATION; i++)
@@ -62,52 +75,110 @@ namespace StockNet
             }
             errors = new double[POPULATION];
 
-            // Load data
-            StreamReader sr = new StreamReader("C:/Users/costco0371/Documents/Visual Studio 2013/Projects/StockNet/StockNet/data.txt");
-            string text = sr.ReadToEnd();
-            sr.Close();
-
-            // Parse data
-            data = new double[DAYS * TICKS];
-            string[] lines = text.Split('\n');
-            for (int i = 0; i < lines.Length; i++)
-            {
-                string[] line = lines[i].Split(',');
-                data[i] = Convert.ToDouble(line[1]);
-            }
-
             // Begin training
             for (int gen = 0; gen < GEN; gen++)
             {
                 // Pick a random day to sample
-                int day = random.Next(0, DAYS);
+                string path = "../../Data/";
+                string[] files = Directory.GetFiles(path + "AAPL/");
+                int day = random.Next(0, files.Length - 1);
+
+                // Pick a minute range to sample
+                int start = random.Next(WIN_MIN, TICKS - SAMPLE);
+
+                // Load data
+                StreamReader sr = new StreamReader(files[day]);
+                string text = sr.ReadToEnd();
+                sr.Close();
+
+                // Parse data
+                aapl = new double[DATA_LEN][];
+                for (int i = 0; i < DATA_LEN; i++) { aapl[i] = new double[TICKS]; }
+                string[] lines = text.Split('\n');
+                for (int i = 0; i < TICKS; i++)
+                {
+                    string[] line = lines[i].Split(',');
+                    for (int j = 0; j < DATA_LEN; j++)
+                    {
+                        aapl[j][i] = Convert.ToDouble(line[j + 1]);
+                    }
+                }
+
+                // Normalize data
+                for (int i = 0; i < DATA_LEN; i++)
+                {
+                    double max = aapl[i].Max();
+                    double min = aapl[i].Min();
+                    double range = max - min;
+                    aapl[i] = aapl[i].Select(n => (n - min) / range).ToArray<double>();
+                }
+
+                sr = new StreamReader(path + "AAPL/daily.txt");
+                text = sr.ReadToEnd();
+                sr.Close();
+
+                // Parse day data
+                aapl_day = new double[DATA_LEN][];
+                for (int i = 0; i < DATA_LEN; i++) { aapl_day[i] = new double[WIN_DAY]; }
+                lines = text.Split('\n');
+                for (int i = 0; i < WIN_DAY; i++)
+                {
+                    string[] line = lines[i + files.Length - 1 - day].Split(',');
+                    for (int j = 0; j < DATA_LEN; j++)
+                    {
+                        aapl_day[j][WIN_DAY - 1 - i] = Convert.ToDouble(line[j + 1]);
+                    }
+                }
+
+                // Normalize day data
+                for (int i = 0; i < DATA_LEN; i++)
+                {
+                    double max = aapl_day[i].Max();
+                    double min = aapl_day[i].Min();
+                    double range = max - min;
+                    aapl_day[i] = aapl_day[i].Select(n => (n - min) / range).ToArray<double>();
+                }
 
                 // Test each network in the population
                 for (int i = 0; i < POPULATION; i++)
                 {
                     errors[i] = 0;
-                    // Test each window of size INPUTNUM
-                    for (int j = INPUTNUM; j < TICKS; j++)
+                    // Test each window of size WIN_MIN
+                    for (int j = start; j < start + SAMPLE; j++) //TICKS
                     {
-                        // Fill the input values
-                        for (int k = j - INPUTNUM; k < j; k++)
-                            networks[i].inputValues[k - j + INPUTNUM] = data[day * TICKS + k] / NORMALIZE;
+                        /* Fill in the input values */
+                        int c = 0;
+
+                        // Day and minute
+                        networks[i].inputValues[c++] = (day % 5) / 5.0;
+                        networks[i].inputValues[c++] = (double)j / TICKS;
+
+                        // Data for past WIN_DAY days
+                        for (int k = 0; k < WIN_DAY; k++)
+                            for (int l = 0; l < DATA_LEN; l++)
+                                networks[i].inputValues[c++] = aapl_day[l][k];
+
+                        // Data for past WIN_MIN minutes
+                        for (int k = j - WIN_MIN; k < j; k++)
+                            for (int l = 0; l < DATA_LEN; l++)
+                                networks[i].inputValues[c++] = aapl[l][k];
 
                         // Forward propagate
                         networks[i].FeedForward();
 
                         // Get error
-                        double a = networks[i].outputValues[0] * NORMALIZE;
-                        double b = data[day + j];
-                        errors[i] += Math.Abs(networks[i].outputValues[0] * NORMALIZE - data[day * TICKS + j]) / data[day * TICKS + j];
+                        double a = networks[i].outputValues[0];
+                        double b = aapl[0][j];
+                        errors[i] += Math.Abs(networks[i].outputValues[0] - aapl[0][j]) / networks[i].outputValues[0];
                     }
+                    errors[i] = errors[i] * 100 / SAMPLE;
                     networks[i].fitness = errors[i];
                 }
 
                 // Genetic Algorithm
                 GeneticAlgorithm();
 
-                string write = "gen: " + gen + ", error: " + errors.Min();
+                string write = errors.Min().ToString();
                 Console.WriteLine(write);
             }
         }
